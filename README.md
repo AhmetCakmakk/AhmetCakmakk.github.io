@@ -1,2 +1,0 @@
-# AhmetCakmakk.github.io
-website
