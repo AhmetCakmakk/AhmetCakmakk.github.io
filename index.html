@@ -1,0 +1,93 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<title>Ana Menü</title>
+	<style>
+		body {
+
+			background-image: url('AnaMenu.jpg');
+			background-size: cover;
+			background-position: center; }
+
+		#RGBpop {
+			background-image: url('RGBpop.jpg');
+			height: 200px;
+			background-position: center;
+			background-repeat: no-repeat;
+		}
+
+		.cont {
+			display: flex;
+			flex-direction: column;
+			justify-content: center;
+			align-items: center;
+			height: calc(100vh - 200px); 
+  margin-top: -10px;  }
+
+		button {
+            font-family: Comic Sans MS;
+            font-weight: bold;
+            width: 300px;
+            height: 100px;
+			margin: 30px;
+			padding: 15px 30px;
+			border: none;
+			border-radius: 10px;
+			background-color: lightcoral;
+			color: rgb(1, 198, 253);
+			font-size: 20px;
+			cursor: pointer;
+			background-position: center;
+			background-repeat: no-repeat;
+			background-size: cover; }
+
+		#Oyun {
+			background-image: url('oyunicon.jpg'); }
+
+		#NasilOynanir {
+			background-image: url('adsıztasarım.png'); }
+
+		#NasilOynanirVideo {
+			background-image: url('youtube.jpg'); }
+
+		#github {
+			background-image: url('githubicon.jpg'); }
+	</style>
+</head>
+<body>
+
+	<div id="RGBpop"></div>
+
+	<div class="cont">
+		<button id="Oyun">OYNA</button>
+		<button id="NasilOynanir">NASIL OYNANIR?</button>
+		<button id="NasilOynanirVideo">NASIL OYNANIR YOUTUBE VIDEOSU</button>
+		<button id="github">GITHUB</button>
+	</div>
+
+	<script>
+		var gameBtn = document.getElementById("Oyun");
+		var nasil = document.getElementById("NasilOynanir");
+		var youtubeBtn = document.getElementById("NasilOynanirVideo");
+		var githubBtn = document.getElementById("github");
+
+		gameBtn.addEventListener("click", function() {
+			window.location.href = "Game.html";
+		});
+
+		nasil.addEventListener("click", function() {
+			window.open("nasil.html", "_blank");
+		});
+		youtubeBtn.addEventListener("click", function() {
+			window.open("nasil.html", "_blank");
+		});
+
+		githubBtn.addEventListener("click", function() {
+			window.open("https://github.com/AhmetCakmakk/AhmetCakmakk.github.io", "_blank");
+		});
+
+	</script>
+
+
+</body>
+</html>

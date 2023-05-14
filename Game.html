@@ -1,0 +1,265 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+<style>
+canvas {
+    border:1px solid black;
+    
+}
+</style>
+</head>
+<body>
+    <div id="balon">Balon öğesi</div>
+    <audio id="pop" src="popsound.wav"></audio>  
+    <audio id="change" src="change.wav"></audio>
+    <audio id="wrong" src="wrong.wav"></audio>
+    
+<script>
+var Balon = document.getElementById('balon');
+var klavyedeger= 0;  // q w e durumunu belirleyen değişken
+let skor = 0;        
+var can = 3;
+var brenk= 1;  //balon rengini ogrendigimiz degisken
+var x;
+var y;
+var a;
+var b;
+var timer = 3000;  // balonu patlatmak için verilen süre
+var tskor = 0;  // saniye icin skor
+var tazalt = 0;  // skor 10'a bolunebilir mi
+var azaltmamiktar = 100;  // zaman azaltma miktarı 0,1 saniye
+document.body.style.cursor = "crosshair";
+
+//gorseller
+var imgr = new Image();
+imgr.src = "redb.jpg";
+var imgg = new Image();
+imgg.src = "greenb.jpg";
+var imgb = new Image();
+imgb.src = "blueb.jpg";
+
+function startGame() {
+    
+    document.body.style.backgroundImage = "url('red.jpg')";
+    document.body.style.backgroundSize = "cover";
+    //rastgele konum üretimi
+    x = Math.floor(Math.random() * (innerWidth) );  
+    y = Math.floor(Math.random() * (innerHeight));
+
+    //üretilen sayıya göre arka plan rengi belirleniyor
+    brenk = Math.floor(Math.random() * 3) + 1;  
+    if(brenk == 1){
+        
+        document.body.style.backgroundImage = "url('green.jpg')";
+        document.body.style.backgroundSize = "cover";} 
+        
+        else if(brenk == 2){
+        
+        document.body.style.backgroundImage = "url('blue.jpg')";
+            document.body.style.backgroundSize = "cover";}
+            else{
+            
+            document.body.style.backgroundImage = "url('red.jpg')";
+            document.body.style.backgroundSize = "cover";}
+    
+    Balon = new cBalon(108, brenk, x, y); //yeni balon uretme
+    myGameArea.start(); }
+          
+
+var myGameArea = {
+    canvas : document.createElement("canvas"),
+    start : function() {
+    this.canvas.addEventListener('click', function(event) {
+    a = event.clientX;
+    b = event.clientY;
+        if (Balon.isClicked(a, b)) { //balon tıklanmıssa balonu patlatacak olan patBalon fonksiyonuna gonderiyor
+            
+            patBalon(Balon);
+    }
+});
+        //canvasin tum ekranı kaplamasi
+        this.canvas.width = window.innerWidth;
+        this.canvas.height = window.innerHeight;
+        this.context = this.canvas.getContext("2d");
+        document.body.insertBefore(this.canvas, document.body.childNodes[0]);
+        this.interval = setInterval(updateGameArea, 20);
+        //klavyede basilan tusa gore arkaplan rengi degisiyor
+        document.addEventListener("keydown", function(event) {    
+            if (event.key == "q") {
+                document.getElementById("change").play();  //arkaplan degistiginde ses oynatiliyor
+                klavyedeger= 1;
+                document.body.style.backgroundImage = "url('red.jpg')";
+                document.body.style.backgroundSize = "cover";} 
+
+                else if (event.key == "w") {
+                document.getElementById("change").play();
+                klavyedeger= 2;
+                document.body.style.backgroundImage = "url('green.jpg')";
+                document.body.style.backgroundSize = "cover";} 
+                else if (event.key == "e") {
+                document.getElementById("change").play();
+                klavyedeger= 3;
+                document.body.style.backgroundImage = "url('blue.jpg')";
+                document.body.style.backgroundSize = "cover"; }
+        });
+    },
+    clear : function() {
+        this.context.clearRect(0, 0, this.canvas.width, this.canvas.height);
+    }
+}
+
+
+//balonu patlatan ve patladiginda yeni balon ureten fonksiyon
+function patBalon(Balon) {
+    if (brenk == klavyedeger) {
+        document.getElementById("pop").play();
+        Balon = null;
+        skor += 10;
+        timer += 500;
+        myGameArea.context.fillText("Skor: " + skor, 10, 50);
+        createBalon()
+         } 
+    else {
+        document.getElementById("wrong").play();
+        can--;
+        
+        
+        if (can == 0) {
+            endGame();
+        }
+    }
+    
+}
+
+// can ve skorlar
+function OyuncuSkor() {
+  myGameArea.context.fillStyle = "white";
+  myGameArea.context.font = "30px Arial";
+  myGameArea.context.fillText("Skor: " + skor, 10, 50);
+}
+
+function OyuncuCan() {
+  myGameArea.context.fillStyle = "white";
+  myGameArea.context.font = "30px Arial";
+  myGameArea.context.fillText("Can: " + can, 200, 50);
+}
+
+//klasik balon, tıklanıldığında patlıyor
+function cBalon(diameter, brenk, x, y) {
+    this.isClicked = function(x, y) {
+        
+        var dx = x - this.x;
+        var dy = y - this.y;
+        var distance = Math.sqrt(dx * dx + dy * dy);
+        return distance <= this.diameter / 2;
+    };
+    
+    this.diameter = diameter;
+    this.x = x;
+    this.y = y;    
+    this.update = function(){
+        //rastgele uretilip fonksiyona verilen sayiya gore balonun rengini ayarlama
+        if (brenk==1) {
+            ctx = myGameArea.context;
+            ctx.drawImage(imgr, this.x - this.diameter/2, this.y - this.diameter/2, this.diameter, this.diameter);
+     
+  }
+        else if (brenk==2) {
+            ctx = myGameArea.context;
+            ctx.drawImage(imgg, this.x - this.diameter/2, this.y - this.diameter/2, this.diameter, this.diameter);
+  }
+        
+        
+        else if (brenk==3) {
+            ctx = myGameArea.context;
+            ctx.drawImage(imgb, this.x - this.diameter/2, this.y - this.diameter/2, this.diameter, this.diameter);
+  }
+        //balonun yarisinin oyun ekranindan tasmasi gibi durumlari onleme
+        if (this.x < this.diameter/2) {
+            this.x = this.diameter/2;
+        }
+        else if (this.x > myGameArea.canvas.width - this.diameter/2) {
+            this.x = myGameArea.canvas.width - this.diameter/2;
+        }
+        if (this.y < this.diameter/2) {
+            this.y = this.diameter/2;
+        }
+        else if (this.y > myGameArea.canvas.height - this.diameter/2) {
+            this.y = myGameArea.canvas.height - this.diameter/2;
+        }
+        
+        
+    }
+
+}
+//balon ureten fonksiyon
+function createBalon(){
+    
+        x = Math.floor(Math.random() * (innerWidth)); //rastgele konum üretimi
+        y = Math.floor(Math.random() * (innerHeight));
+        brenk = Math.floor(Math.random() * 3) + 1; //rastgele renk
+        //balon üretme
+         Balon = new cBalon(108, brenk, x, y);
+         timer = 2000;
+}
+//oyunu bitiren fonksiyon
+function endGame() {
+  clearInterval(myGameArea.interval);
+  if (confirm("Oyun bitti! Tekrar oynamak ister misiniz?")) {
+    location.reload();
+  }
+}
+//oyunu gunceller
+function updateGameArea() {
+    myGameArea.clear();
+    OyuncuSkor();
+    OyuncuCan();
+    Balon.update();   
+    //belirli bir sure sonra balon kendiliginden patlar, 3 saniye ancak her balon patladiginda bu sure azalir
+    if (Balon.y < 0) {
+        can--;
+        if (can === 0) {
+            endGame();
+        } else {
+            createBalon();
+        }
+    }
+    
+    if (tskor % 10 == 0 && tskor != 0 && tazalt != tskor) {
+        tazalt = tskor;
+        timer = timer - azaltmamiktar;
+    }
+    if (timer <= 0) {
+        can--;
+        
+        if (can == 0) {
+            endGame();
+        } else {
+            
+            createBalon();
+        }
+    }
+    tskor++;
+    timer -= 20;
+    
+}
+
+//balonu patlatir ve yerine yenisini koyar, diger fonksiyonlarda da oldugu gibi can 0 olursa oyunu bitirir
+function Yoket(){
+    can--;
+    Balon = null;
+    document.getElementById("pop").play();
+    createBalon()
+    
+    if (can == 0) {
+            endGame();
+        }
+}
+
+startGame();
+
+</script>
+
+</body>
+</html>
