@@ -26,6 +26,8 @@ Projeyi yüklemek ve çalıştırmak için gerekli aşamalar:
   -Daha sonra html,javascript ve css dosyalarını çalıştırabilen dilediğiniz editörden dosyayı açın.
   +Artık kodun üzerinde değişiklikler yapmaya ve istediğiniz gibi kullanmaya hazırsınız.
 ```
+## Oyuna Eklenebilecekler
+Oyuna farklı balonlar eklenebilir. Örneğin patlatmak için 3 kere tıklamak gereken Büyük Balon, patladığında 3 tane daha balon ortaya çıkaran Anne Balon, ortaya çıktığında rastgele bir konuma hareket eden ve patlatmak için imleci belirli bir süre balonun üzerinde tutmamız gereken kanatlı Melek Balon vb 
 
 ## Oyunun Youtube tanıtımı
 https://youtu.be/Esur11_KN6g    
